@@ -78,3 +78,6 @@ android.*
 *.js
 !src/minshell.html
 !src/shell.html
+
+#VSCode
+.vscode
