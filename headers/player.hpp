@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include <string>
+#include <cstring>
+#include <cstdint>
 
 namespace Plr{
     class Player{

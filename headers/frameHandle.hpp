@@ -1,6 +1,11 @@
 #ifndef FRAMEHANDLE_HPP
 #define FRAMEHANDLE_HPP
 
+#include "renders.hpp"
+#include "house.hpp"
+
+HOUSE::HOUSE housePlaceholder("placeholder", "placeholder description", BLUE);
+
 void UpdatePre(){
 
 }
@@ -14,7 +19,7 @@ void UpdatePost(){
 }
 
 void Render(){
-    
+    RENDER::RenderHouse(housePlaceholder);
 }
 
 #endif
