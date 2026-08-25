@@ -9,23 +9,45 @@
 namespace Plr{
     class Player{
         private:
-        std::string name;
-        uint32_t money;
-        bool ownings[40];
+        std::string name = "None";
+        uint64_t money = 0;
+        bool ownings[40] = {false};
 
         public:
-        Player(std::string name, uint32_t money){
+        Player(){
+            this->name = "None";
+            this->money = 0;
+            memset(this->ownings, false, sizeof(this->ownings));
+        }
+
+        Player(std::string name, uint64_t money){
             this->name = name;
             this->money = money;
             memset(this->ownings, false, sizeof(this->ownings));
         }
 
-        bool AddMoney(uint32_t value){
+        std::string GetName(){
+            return this->name;
+        }
+
+        uint64_t GetMoney(){
+            return this->money;
+        }
+
+        bool GetOwning(uint8_t index){
+            return this->ownings[index];
+        }
+
+        void SetName(std::string newName){
+            this->name = newName;
+        }
+
+        bool AddMoney(uint64_t value){
             this->money += value;
             return true; 
         }
 
-        bool RemoveMoney(uint32_t value){
+        bool RemoveMoney(uint64_t value){
             this->money -= value;
             return true;
         }

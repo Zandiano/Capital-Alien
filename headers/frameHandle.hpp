@@ -4,7 +4,7 @@
 #include "renders.hpp"
 #include "house.hpp"
 
-HOUSE::HOUSE housePlaceholder("placeholder", "placeholder description", BLUE);
+HOUSE::HOUSE housePlaceholder;
 
 void UpdatePre(){
 

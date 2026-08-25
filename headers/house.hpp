@@ -1,5 +1,5 @@
 #ifndef HOUSE_HPP
-#define HOUSE_HPP
+#define HOUSE_HPP                                                                                                                                                                                                                                                                       
 
 #include <string>
 #include "player.hpp"
@@ -8,32 +8,46 @@
 namespace HOUSE{
     class HOUSE{
         private:
-        std::string name;
-        std::string description;
+        std::string name = "None";
+        std::string description = "None";
         Color color = RED;
         Plr::Player* owner = 0;
+        uint64_t revenue;
+
 
         public:
-        HOUSE(std::string name, std::string description, Color color){
+        HOUSE(){
+            this->name = "name";
+            this->description = "description";
+            this->color = RED;
+            this->revenue = 0;
+        }
+
+        HOUSE(std::string name, std::string description, Color color, uint64_t revenue){
             this->name = name;
             this->description = description;
             this->color = color;
+            this->revenue = revenue;
         }
 
         std::string GetName(){
-            return name;
+            return this->name;
         }
 
         std::string GetDescription(){
-            return description;
+            return this->description;
         }
 
         Color GetColor(){
-            return color;
+            return this->color;
         }
 
         Plr::Player* GetOwner(){
-            return owner;
+            return this->owner;
+        }
+
+        uint64_t GetRevenue(){
+            return this->revenue;
         }
 
         void SetName(std::string newName){
@@ -50,6 +64,10 @@ namespace HOUSE{
 
         void SetOwner(Plr::Player* player){
             this->owner = player;
+        }
+
+        void SetRevenue(uint64_t newRevenue){
+            this->revenue = newRevenue;
         }
     };
 }
