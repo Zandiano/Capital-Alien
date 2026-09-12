@@ -15,11 +15,11 @@ namespace PLR{
         uint8_t houseIndex = 0;
     } Player;
 
-    Player Constructor(const string name){
+    Player Constructor(const string& name){
         return {name: name};
     }
 
-    uint32_t GetMoney(Player player){
+    uint32_t GetMoney(const Player& player){
         return player.money;
     }
 
@@ -31,7 +31,12 @@ namespace PLR{
         player.money -= value;
     }
 
-    uint8_t GetHouse(Player player){
+    void TransferMoney(Player& from, Player& dest, uint16_t value){
+        RemoveMoney(from, value);
+        AddMoney(dest, value);
+    }
+
+    uint8_t GetPos(const Player& player){
         return player.houseIndex;
     }
 

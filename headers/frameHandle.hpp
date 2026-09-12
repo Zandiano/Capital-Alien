@@ -3,6 +3,7 @@
 
 #include "renders.hpp"
 #include "house.hpp"
+#include "player.hpp"
 
 void UpdatePre(){
     
