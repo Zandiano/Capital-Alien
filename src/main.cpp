@@ -9,7 +9,7 @@ int main()
 {
     InitWindow(CONSTANT::ScreenW, CONSTANT::ScreenH, "Capital Alien");
 
-    SetTargetFPS(60);               
+    SetTargetFPS(60);
 
     Camera3D camera = {
         position: {0,1,0}, 
@@ -18,21 +18,24 @@ int main()
         fovy: 60, 
         projection: CAMERA_PERSPECTIVE
     };
-
-    while (!WindowShouldClose()){   
+    
+    while (!WindowShouldClose()){
         UpdatePre();
         Update();
         UpdatePost();
 
         BeginDrawing();
         BeginMode3D(camera);
+
             ClearBackground(RAYWHITE);
             Render();
+
         EndMode3D();
         EndDrawing();
+        
         std::system("cls");
     }
-    CloseWindow();        
+    CloseWindow();
 
     return 0;
 }

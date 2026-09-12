@@ -3,73 +3,47 @@
 
 #include <iostream>
 #include <string>
-#include <cstring>
 #include <cstdint>
+#include <math.h>
 
-namespace Plr{
-    class Player{
-        private:
-        std::string name = "None";
-        uint64_t money = 0;
-        bool ownings[40] = {false};
+using namespace std;
 
-        public:
-        Player(){
-            this->name = "None";
-            this->money = 0;
-            memset(this->ownings, false, sizeof(this->ownings));
-        }
+namespace PLR{
+    typedef struct{
+        string name = "";
+        int32_t money = 0;
+        uint8_t houseIndex = 0;
+    } Player;
 
-        Player(std::string name, uint64_t money){
-            this->name = name;
-            this->money = money;
-            memset(this->ownings, false, sizeof(this->ownings));
-        }
+    Player Constructor(const string name){
+        return {name: name};
+    }
 
-        std::string GetName(){
-            return this->name;
-        }
+    uint32_t GetMoney(Player player){
+        return player.money;
+    }
 
-        uint64_t GetMoney(){
-            return this->money;
-        }
+    void AddMoney(Player& player, uint32_t value){
+        player.money += value;
+    }
 
-        bool GetOwning(uint8_t index){
-            return this->ownings[index];
-        }
+    void RemoveMoney(Player& player, uint32_t value){
+        player.money -= value;
+    }
 
-        void SetName(std::string newName){
-            this->name = newName;
-        }
+    uint8_t GetHouse(Player player){
+        return player.houseIndex;
+    }
 
-        bool AddMoney(uint64_t value){
-            this->money += value;
-            return true; 
-        }
+    bool NextHouse(Player& player){
+        player.houseIndex++;
+        return !player.houseIndex;
+    }
 
-        bool RemoveMoney(uint64_t value){
-            this->money -= value;
-            return true;
-        }
-
-        bool AddOwning(uint8_t index){
-            if(index < 0 || index > sizeof(ownings)){
-                std::cout << "Erro ao adicionar propriedade (Fora do array)" << std::endl;
-                return false;
-            }
-            this->ownings[index] = true;
-            return true;
-        }
-
-        bool RemoveOwning(uint8_t index){
-            if(index < 0 || index > sizeof(ownings)){
-                std::cout << "Erro ao adicionar propriedade (Fora do array)" << std::endl;
-                return false;
-            }
-            this->ownings[index] = false;
-            return true;
-        }
-    };
+    bool SetHouse(Player& player, uint8_t index){
+        player.houseIndex = index;
+        return !player.houseIndex;
+    }
 }
 
 #endif

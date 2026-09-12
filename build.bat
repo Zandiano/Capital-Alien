@@ -1,4 +1,4 @@
-@echo off
+@echo on
 
 cmake -S . -B build
 if errorlevel 1 exit /b 1
