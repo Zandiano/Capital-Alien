@@ -11,30 +11,31 @@ using namespace std;
 
 namespace HSE{
 
-    #define PARK M1
-    #define START M2
-    #define QUESTION_MARK M3
-    #define PRISION M4
-    #define TELEPORT M5
+    typedef enum{
+        NORMAL,
+        START,
+        PARK,
+        QUESTION_MARK,
+        PRISION,
+        TELEPORT
+    } HSETYPE;
 
     typedef struct{
         string name = "";
         Player* owner = nullptr;
         uint16_t value = 0;
-        uint8_t FLAGS = M0; // pensando em mudar de flags pra um enum e deixar as flags para modificadores das casas (ex: predio, grama verde, perigoso)
+        uint8_t FLAGS = M0;
         uint8_t tier = 0;
+        HSETYPE type = NORMAL;
     } House;
 
-    House Constructor(const string& name, uint16_t value, uint8_t FLAGS, uint8_t tier){
-        if(FLAGS & START){
-            return {name: "Start", value: value, FLAGS: START};
-        }
-        return {name: name, value: value, FLAGS: FLAGS, tier: tier};
+    House Constructor(const string& name, uint16_t value, uint8_t FLAGS, uint8_t tier, HSETYPE type){
+        return {name: name, value: value, FLAGS: FLAGS, tier: tier, type: type};
     }
 
     bool SetOwner(House& house, Player* newOwner){
         Player* lastOwner = house.owner;
-        if(!(house.FLAGS & START)){
+        if(house.type == NORMAL){
             house.owner = newOwner;
         }
         return lastOwner != house.owner;
