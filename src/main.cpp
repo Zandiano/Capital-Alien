@@ -19,20 +19,24 @@ int main()
         projection: CAMERA_PERSPECTIVE
     };
     
+    Init();
     while (!WindowShouldClose()){
         UpdatePre();
         Update();
         UpdatePost();
 
-        BeginDrawing();
+        ClearBackground(RAYWHITE);
+        
         BeginMode3D(camera);
-
-            ClearBackground(RAYWHITE);
-            Render();
-
+        Render3D();
         EndMode3D();
+
+        BeginDrawing();
+        Render2D();
         EndDrawing();
         
+        Debug();
+        _sleep(10);
         std::system("cls");
     }
     CloseWindow();
