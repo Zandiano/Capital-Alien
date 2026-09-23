@@ -5,6 +5,9 @@
 
 #define array_size(arr) int(sizeof((arr))/sizeof((arr)[0]))
 
+#define MAXHOUSES 255
+#define MAXPLAYERS 4
+
 typedef enum{
     M0 = 0,
     M1 = 1,
@@ -16,4 +19,13 @@ typedef enum{
     M7 = 64,
     M8 = 128,
 } BITMASK;
+
+typedef enum{
+    NORMAL,
+    START,
+    PARK,
+    QUESTION_MARK,
+    PRISION,
+    TELEPORT
+} HSETYPE;
 #endif

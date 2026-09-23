@@ -1,59 +1,63 @@
 cmake_minimum_required(VERSION 3.24...3.30)
-project(CapitalAlien)
+
+project(CapitalAlien LANGUAGES C CXX)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include(FetchContent)
 
-# Generate compile_commands.json
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+# =========================
+# Raylib
+# =========================
 
-# Dependencies
 set(RAYLIB_VERSION 6.0)
 
 FetchContent_Declare(
     raylib
-    DOWNLOAD_EXTRACT_TIMESTAMP OFF
     URL https://github.com/raysan5/raylib/archive/refs/tags/${RAYLIB_VERSION}.tar.gz
-    FIND_PACKAGE_ARGS
+    DOWNLOAD_EXTRACT_TIMESTAMP OFF
 )
 
 FetchContent_MakeAvailable(raylib)
 
-# Our Project
-add_executable(${PROJECT_NAME})
-add_subdirectory(src)
+# =========================
+# Project files
+# =========================
 
-set_target_properties(${PROJECT_NAME} PROPERTIES
-    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${PROJECT_NAME})
+file(GLOB_RECURSE SOURCE_FILES CONFIGURE_DEPENDS
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/headers/*.cpp"
+)
 
-set_property(TARGET ${PROJECT_NAME} PROPERTY VS_DEBUGGER_WORKING_DIRECTORY $<TARGET_FILE_DIR:${PROJECT_NAME}>)
+file(GLOB_RECURSE HEADER_FILES CONFIGURE_DEPENDS
+    "${CMAKE_CURRENT_SOURCE_DIR}/headers/*.hpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/headers/*.h"
+)
 
-if ("${PLATFORM}" STREQUAL "Web")
-    add_custom_command(
-        TARGET ${PROJECT_NAME} PRE_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/src/resources $<TARGET_FILE_DIR:${PROJECT_NAME}>/../resources
-    )
-    #DEPENDS ${PROJECT_NAME}
-else()
-    add_custom_command(
-        TARGET ${PROJECT_NAME} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/src/resources $<TARGET_FILE_DIR:${PROJECT_NAME}>/resources
-    )
-    #DEPENDS ${PROJECT_NAME}
-endif()
+# =========================
+# Executable
+# =========================
 
-#set(raylib_VERBOSE 1)
-target_link_libraries(${PROJECT_NAME} raylib)
+add_executable(${PROJECT_NAME}
+    ${SOURCE_FILES}
+    ${HEADER_FILES}
+)
 
-# Web Configurations
-if ("${PLATFORM}" STREQUAL "Web")
-    # Tell Emscripten to build an example.html file.
-    set_target_properties(${PROJECT_NAME} PROPERTIES SUFFIX ".html")
-    target_link_options(${PROJECT_NAME} PUBLIC -sUSE_GLFW=3 PUBLIC --preload-file resources)
-endif()
+# =========================
+# Include directory
+# =========================
 
-# Checks if OSX and links appropriate frameworks (Only required on MacOS)
-if (APPLE)
-    target_link_libraries(${PROJECT_NAME} "-framework IOKit")
-    target_link_libraries(${PROJECT_NAME} "-framework Cocoa")
-    target_link_libraries(${PROJECT_NAME} "-framework OpenGL")
-endif()
+target_include_directories(${PROJECT_NAME}
+    PRIVATE
+        "${CMAKE_CURRENT_SOURCE_DIR}/headers"
+)
+
+# =========================
+# Raylib
+# =========================
+
+target_link_libraries(${PROJECT_NAME}
+    PRIVATE
+        raylib
+)

@@ -1,7 +1,7 @@
 #include "raylib.h"
 
-#include "../headers/game_logic.hpp"
-#include "../headers/constants.hpp"
+#include "game_logic.hpp"
+#include "constants.hpp"
 
 
 int main()
@@ -11,11 +11,11 @@ int main()
     SetTargetFPS(60);
 
     Camera3D camera = {
-        position: {0,1,0}, 
-        target: {0,0,2}, 
-        up: {0,1,0}, 
-        fovy: 60, 
-        projection: CAMERA_PERSPECTIVE
+        {0,1,0}, 
+        {0,0,2}, 
+        {0,1,0}, 
+        60, 
+        CAMERA_PERSPECTIVE
     };
     
     Init();

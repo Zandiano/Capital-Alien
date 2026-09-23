@@ -1,62 +1,32 @@
 #ifndef PLAYER_HPP
 #define PLAYER_HPP
 
-#include <iostream>
 #include <string>
 #include <cstdint>
-#include <math.h>
-#include "utilities.hpp"
+#include "structs.hpp"
 
 using namespace std;
 
-struct Player{
-    string name = "PLACEHOLDER";
-    int32_t money = 0;
-    Color color = RED;
-    uint8_t houseIndex = 0;
-};
+Player Constructor(uint8_t ID, const string& name, Color newColor);
 
-Player Constructor(const string& name, Color color){
-    return {name: name, color: color};
-}
+uint8_t GetID(const Player& player);
 
-string GetName(const Player& player){
-    return player.name;
-}
+string GetName(const Player& player);
 
-uint32_t GetMoney(const Player& player){
-    return player.money;
-}
+uint32_t GetMoney(const Player& player);
 
-Color GetPlayerColor(const Player& player){
-    return player.color;
-}
+Color GetPlayerColor(const Player& player);
 
-void AddMoney(Player& player, uint32_t value){
-    player.money += value;
-}
+void AddMoney(Player& player, uint32_t value);
 
-void RemoveMoney(Player& player, uint32_t value){
-    player.money -= value;
-}
+void RemoveMoney(Player& player, uint32_t value);
 
-void TransferMoney(Player& from, Player& dest, uint16_t value){
-    RemoveMoney(from, value);
-    AddMoney(dest, value);
-}
+void TransferMoney(Player& from, Player& dest, uint16_t value);
 
-uint8_t GetPos(const Player& player){
-    return player.houseIndex;
-}
+uint8_t GetPos(const Player& player);
 
-bool NextHouse(Player& player, uint8_t maxHouses){
-    ++player.houseIndex %= maxHouses;
-    return !player.houseIndex;
-}
+bool NextHouse(Player& player, uint8_t maxHouses);
 
-bool SetHouse(Player& player, uint8_t index){
-    player.houseIndex = index;
-    return !player.houseIndex;
-}
+bool SetHouse(Player& player, uint8_t index);
 
 #endif
