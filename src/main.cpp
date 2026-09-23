@@ -1,13 +1,12 @@
 #include "raylib.h"
 
-#include "../headers/frameHandle.hpp"
-#include "../headers/constants.hpp"
+#include "../headers/game_logic.hpp"
 #include "../headers/constants.hpp"
 
 
 int main()
 {
-    InitWindow(CONSTANT::ScreenW, CONSTANT::ScreenH, "Capital Alien");
+    InitWindow(ScreenW, ScreenH, "Capital Alien");
 
     SetTargetFPS(60);
 
