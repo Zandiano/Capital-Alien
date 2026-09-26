@@ -21,6 +21,15 @@ struct House{
     uint8_t housesBuilt = 0;    // Residências construídas
 };
 
+struct Card {
+    string desc = "";    // Descrição da Carta
+    bool good;           // Carta Positiva ou negativa?
+    CARD_ACTION action;  // Tipo de ação
+    uint8_t value = 0;   // Valor ($) da ação
+    int8_t target = -1;  // Destino
+    int8_t passBy = -1; 
+};
+
 struct Player{
     uint8_t ID = 0;
     string name = "PLACEHOLDER";
@@ -33,6 +42,27 @@ struct Player{
     bool bankrupt = false;
     bool movedByCard = false;
     Card lastCard;
+};
+
+struct EventDecision {
+    EVENT_ACTION action = NONE;
+    int houseId = -1;
+};
+
+struct Auction {
+    bool active = false;
+    int houseId = -1;
+    int currentPlayer = -1;
+    uint32_t currentBid = 0;
+    int highestBidder = -1;
+};
+
+struct LiquidationDecision {
+    bool active = false;
+    int8_t playerId = -1;
+    int8_t receiverId = -1;
+    uint16_t amountOwed = 0;
+    bool payEachPlayer = false;
 };
 
 struct Game{
@@ -50,36 +80,6 @@ struct Game{
     bool jailCardActive = false;
     EventDecision eventDecision;
     Auction auction;
-};
-
-struct Card {
-    string desc = "";    // Descrição da Carta
-    bool good;           // Carta Positiva ou negativa?
-    CARD_ACTION action;  // Tipo de ação
-    uint8_t value = 0;   // Valor ($) da ação
-    int8_t target = -1;  // Destino
-    int8_t passBy = -1; 
-};
-
-struct LiquidationDecision {
-    bool active = false;
-    int8_t playerId = -1;
-    int8_t receiverId = -1;
-    uint16_t amountOwed = 0;
-    bool payEachPlayer = false;
-};
-
-struct EventDecision {
-    EVENT_ACTION action = NONE;
-    int houseId = -1;
-};
-
-struct Auction {
-    bool active = false;
-    int houseId = -1;
-    int currentPlayer = -1;
-    uint32_t currentBid = 0;
-    int highestBidder = -1;
 };
 
 #endif

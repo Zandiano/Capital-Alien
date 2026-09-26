@@ -5,6 +5,8 @@
 #include <random>
 #include <algorithm>
 
+void generateCards(Card cards_arr[], int FLAG);
+
 void Init(Game& game, int qntHouse, int qntPlayers){
     game.qntHouse = qntHouse;
     game.qntPlayers = qntPlayers;

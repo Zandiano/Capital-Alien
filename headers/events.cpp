@@ -477,6 +477,8 @@ void railRoadEvent(Game& game, Player& player, House& house) {
     }
 }
 
+/* Seletor de eventos. Função que controla o evento disparado de acordo
+com a casa que o jogador acabou de se movimentar para*/
 void eventSelector(Game& game, House& house, Player& player, uint8_t dice) {
     switch(house.type) {
     case START:
