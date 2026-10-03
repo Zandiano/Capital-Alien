@@ -8,6 +8,7 @@
 #include "tabletop.hpp"
 #include "game_renderer.hpp"
 #include "filehandler.hpp"
+#include <fstream>
 
 uint32_t GetLiquidationValue(Game& game, Player& player) {
     uint32_t value = player.money;
@@ -98,7 +99,7 @@ void GetChestCard(Game& game, Player& player) {
     game.chestCards[QNTCARDS - 1] = card;
 
     player.lastCard = card;
-    
+
     switch(card.action) {
     case COLLECT_MONEY:
         AddMoney(player, card.value);
@@ -166,7 +167,7 @@ void GetChanceCard(Game& game, Player& player) {
     if(!(card.action == GET_OUT_OF_JAIL) && !game.jailCardActive) {
         game.chanceCards[QNTCARDS - 1] = card;
     }
-    
+
     player.lastCard = card;
 
     switch(card.action) {
@@ -265,48 +266,48 @@ void GetChanceCard(Game& game, Player& player) {
 void TaxesEvent(Game& game, Player& player) {
     if(GetPos(player) != 4) {
         PAYMENT_STATUS status = VerifyMoney(game, player, 75);
-        
-        switch(status){
-            case CAN_PAY:
-                RemoveMoney(player, 75);
+
+        switch(status) {
+        case CAN_PAY:
+            RemoveMoney(player, 75);
             break;
 
-            case NEED_LIQUIDATION:
-                Liquidate(game, player, -1, 75, false);
+        case NEED_LIQUIDATION:
+            Liquidate(game, player, -1, 75, false);
             break;
 
-            default:
-                Bankrupt(player);
+        default:
+            Bankrupt(player);
             break;
         }
         return;
     }
 
     PAYMENT_STATUS status = VerifyMoney(game, player, 200);
-    
-    switch(status){
-        case CAN_PAY:
-            RemoveMoney(player, 200);
+
+    switch(status) {
+    case CAN_PAY:
+        RemoveMoney(player, 200);
         break;
 
-        case NEED_LIQUIDATION:
-            Liquidate(game, player, -1, 200, false);
+    case NEED_LIQUIDATION:
+        Liquidate(game, player, -1, 200, false);
         break;
 
-        default:
-            uint32_t total = GetLiquidationValue(game, player);
+    default:
+        uint32_t total = GetLiquidationValue(game, player);
 
-            if(total <= 0) {
-                Bankrupt(player);
-                break;
-            }
+        if(total <= 0) {
+            Bankrupt(player);
+            break;
+        }
 
-            status = VerifyMoney(game, player, 0.1 * total);
-            if(status == CAN_PAY) {
-                RemoveMoney(player, 0.1 * total);
-            } else if(status == NEED_LIQUIDATION) {
-                Liquidate(game, player, -1, 0.1 * total, false);
-            }
+        status = VerifyMoney(game, player, 0.1 * total);
+        if(status == CAN_PAY) {
+            RemoveMoney(player, 0.1 * total);
+        } else if(status == NEED_LIQUIDATION) {
+            Liquidate(game, player, -1, 0.1 * total, false);
+        }
         break;
     }
 }
@@ -318,28 +319,30 @@ void PrisionEvent(Player& player) {
 
 uint8_t GetPropCount(Game& game, Player& player, House& house) {
     int count = 0;
-    switch(house.type){
-        case NORMAL:
-            for(int i = 1; i < game.qntHouse; i++) {
-                House& current = game.houses[i];
-                if(current.type == NORMAL 
-                    && ColorToInt(current.color) == ColorToInt(house.color) 
-                    && current.owner == player.ID) { count++; }
+    switch(house.type) {
+    case NORMAL:
+        for(int i = 1; i < game.qntHouse; i++) {
+            House& current = game.houses[i];
+            if(current.type == NORMAL
+                && ColorToInt(current.color) == ColorToInt(house.color)
+                && current.owner == player.ID) {
+                count++;
             }
-            return count;
-        break;
-        
-        case COMPANY:
-            if(game.houses[12].owner == player.ID) count++;
-            if(game.houses[28].owner == player.ID) count++;
-            return count;
+        }
+        return count;
         break;
 
-        case RAILROAD:
-            for(int i = 1; i < game.qntHouse; i++) {
-                if(game.houses[i].type == RAILROAD && game.houses[i].owner == player.ID) count++;  
-            }
-            return count;
+    case COMPANY:
+        if(game.houses[12].owner == player.ID) count++;
+        if(game.houses[28].owner == player.ID) count++;
+        return count;
+        break;
+
+    case RAILROAD:
+        for(int i = 1; i < game.qntHouse; i++) {
+            if(game.houses[i].type == RAILROAD && game.houses[i].owner == player.ID) count++;
+        }
+        return count;
         break;
     }
     return 0;
@@ -347,23 +350,23 @@ uint8_t GetPropCount(Game& game, Player& player, House& house) {
 
 void CompanyEvent(Game& game, Player& player, House& house, uint8_t dice) {
     if(GetOwner(house) == GetID(player)) return;
-    
+
     if(GetOwner(house) != -1) {
         Player& owner = GetPlayer(game, GetOwner(house));
         int mod = (GetPropCount(game, owner, house) == 2) ? 10 : 4;
         PAYMENT_STATUS status = VerifyMoney(game, player, mod * dice);
-        
-        switch(status){
-            case CAN_PAY:
-                TransferMoney(player, owner, mod * dice); 
+
+        switch(status) {
+        case CAN_PAY:
+            TransferMoney(player, owner, mod * dice);
             break;
 
-            case NEED_LIQUIDATION:
-                Liquidate(game, player, GetID(owner), mod * dice, false);
+        case NEED_LIQUIDATION:
+            Liquidate(game, player, GetID(owner), mod * dice, false);
             break;
 
-            default:
-                Bankrupt(player);
+        default:
+            Bankrupt(player);
         }
     } else {
         game.eventDecision.action = BUY;
@@ -372,30 +375,37 @@ void CompanyEvent(Game& game, Player& player, House& house, uint8_t dice) {
 }
 
 void HouseEvent(Game& game, Player& player, House& house) {
-    Player& owner = GetPlayer(game, GetOwner(house));
+    int id;
     
-    if (GetID(owner) == -1) {
+    if(GetOwner(house) == -1) {
+        id = -1;
+    } else {
+        Player& owner = owner = GetPlayer(game, GetOwner(house));
+        id = GetID(owner);
+    }
+
+    if(id == -1) {
         game.eventDecision.action = EVENT_ACTION::BUY;
         game.eventDecision.houseId = player.houseIndex;
         return;
     }
 
-    if (GetID(owner) == GetID(player)) return;
+    if(id == GetID(player)) return;
 
     uint32_t rent = GetValue(game, house);
     PAYMENT_STATUS status = VerifyMoney(game, player, rent);
 
-    switch(status){
-        case CAN_PAY:
-            TransferMoney(player, game.players[house.owner], rent);
+    switch(status) {
+    case CAN_PAY:
+        TransferMoney(player, game.players[house.owner], rent);
         break;
 
-        case NEED_LIQUIDATION:
-            Liquidate(game, player, GetID(owner), rent, false);
+    case NEED_LIQUIDATION:
+        Liquidate(game, player, id, rent, false);
         break;
 
-        default:
-            Bankrupt(player);
+    default:
+        Bankrupt(player);
     }
 }
 

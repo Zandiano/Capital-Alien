@@ -1,0 +1,3 @@
+HOUSEEVENT action=0 houseId=-1 houseOwner=-1
+HOUSEEVENT action=0 houseId=-1 houseOwner=-1
+HOUSEEVENT action=1 houseId=8 houseOwner=-1

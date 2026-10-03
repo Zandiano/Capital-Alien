@@ -1,0 +1,16 @@
+Avançar até o Estacionamento,true,MOVE_TO,0,20,0;
+Avançar até Início e receber $200,true,MOVE_AND_RECEIVE,200,0,0;
+Avançar até Copacabana e receber $200 se passar pelo Início,true,MOVE_RECEIVE_IF,200,24,0;
+Avançar até Av. Presidente JK e receber $200 se passar pelo Início,true,MOVE_RECEIVE_IF,200,16,0;
+Avançar até a ferrovia mais próxima e se tiver dono pagar o dobro do aluguel,false,MOVE_NEAREST_RAILROAD,0,0,0;
+Pagar $100 ao banco,false,PAY_MONEY,100,0,0;
+Avançar até o serviço público mais próximo e se tiver dono pagar 10x o resultado dos dados,false,MOVE_NEAREST_COMPANY,0,0,0;
+Receber $50 do banco,true,COLLECT_MONEY,50,0,0;
+Sair da prisão gratuitamente,true,GET_OUT_OF_JAIL,0,0,0;
+Voltar 3 casas,false,MOVE_BACK,0,3,0;
+Ir diretamente para a prisão sem receber $200,false,MOVE_TO,0,10,0;
+Pagar ao banco $25 por cada casa e $100 por cada hotel,false,ESPECIAL_PAY,0,0,0;
+Pagar multa de $15,false,PAY_MONEY,15,0,0;
+Ir até a Estação de Metrô Maracanã e receber $200 se passar pelo Início,true,MOVE_RECEIVE_IF,200,5,0;
+Pagar $50 para cada outro jogador,false,PAY_EACH_PLAYER,50,0,0;
+Receber $150 do banco,true,COLLECT_MONEY,150,0,0;

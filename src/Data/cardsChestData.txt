@@ -1,0 +1,16 @@
+Receber $100 por passar tempo com um vizinho idoso,true,COLLECT_MONEY,100,0,0;
+Receber $50 por organizar uma limpeza comunitária,true,COLLECT_MONEY,50,0,0;
+Receber $10 por participar de uma doação de sangue,true,COLLECT_MONEY,10,0,0;
+Pagar $50 por comprar algo em uma venda escolar,false,PAY_MONEY,50,0,0;
+Pagar $60 por fazer uma doação à caridade,false,PAY_MONEY,60,0,0;
+Receber $10 de cada outro jogador por organizar uma festa,true,COLLECT_FROM_EACH_PLAYER,10,0,0;
+Ir diretamente para a prisão,false,GO_TO_JAIL,0,10,0;
+Receber $20 por ajudar um vizinho com compras,true,COLLECT_MONEY,20,0,0;
+Receber $100 por ajudar a construir um parquinho escolar,true,COLLECT_MONEY,100,0,0;
+Receber $100 por participar de atividades com crianças em um hospital,true,COLLECT_MONEY,100,0,0;
+Pagar $100 por participar de uma arrecadação escolar,false,PAY_MONEY,100,0,0;
+Avançar até o Início e receber $200,true,MOVE_AND_RECEIVE,200,0,0;
+Receber $200 por ajudar vizinhos após uma tempestade,true,COLLECT_MONEY,200,0,0;
+Pagar $50 por fazer uma doação a um abrigo de animais,false,PAY_MONEY,50,0,0;
+Pagar $40 por cada casa e $115 por cada hotel,false,ESPECIAL_PAY,0,0,0;
+Receber $25 por organizar uma venda de bolos escolar,true,COLLECT_MONEY,25,0,0;

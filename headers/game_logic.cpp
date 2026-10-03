@@ -12,17 +12,17 @@
 Game mainGame;
 Client client;
 
-string MoveAndTriggerEvent(Player& player, int dado1, int dado2, int total, const string& actorLabel){
+string MoveAndTriggerEvent(Player& player, int dado1, int dado2, int total, const string& actorLabel) {
     uint8_t maxHouses = GetHouseQnt(mainGame);
     bool passedStart = false;
 
-    for(int i = 0; i < total; i++){
-        if(NextHouse(player, maxHouses)){
+    for(int i = 0; i < total; i++) {
+        if(NextHouse(player, maxHouses)) {
             passedStart = true;
         }
     }
 
-    if(passedStart){
+    if(passedStart) {
         AddMoney(player, 200);
     }
 
@@ -30,21 +30,21 @@ string MoveAndTriggerEvent(Player& player, int dado1, int dado2, int total, cons
     EventSelector(mainGame, house, player, (uint8_t)total);
 
     string msg = actorLabel + " tirou " + to_string(dado1) + " e " + to_string(dado2)
-               + " (" + to_string(total) + ") e caiu em " + house.name;
+        + " (" + to_string(total) + ") e caiu em " + house.name;
 
-    if(passedStart){
+    if(passedStart) {
         msg += ". Passou pelo Inicio e recebeu $200";
     }
-    if(player.bankrupt){
+    if(player.bankrupt) {
         msg += ". " + GetName(player) + " faliu!";
     }
 
     return msg;
 }
 
-void Init(){
+void Init() {
     SetRandomSeed((unsigned int)time(NULL));
-    
+
     ReadConfig(client.config);
 
     Init(mainGame, client.config);
@@ -53,30 +53,30 @@ void Init(){
 }
 
 void UpdatePre() {
-    if(IsInMenu(client)){
+    if(IsInMenu(client)) {
         int num = GetKeyPressed();
         if(num >= KEY_ONE && num <= KEY_FIVE)
-            client.index = num - KEY_ONE; 
+            client.index = num - KEY_ONE;
     }
-    if(client.pressedButton){
+    if(client.pressedButton) {
         SendFile(mainGame, client.config.PATH);
     }
     RetrieveFile(mainGame, client.config.PATH);
 }
 
-void Update(){
+void Update() {
 }
 
-void UpdatePost(){
+void UpdatePost() {
 }
 
-void Render3D(){
+void Render3D() {
     if(IsInMenu(client)) return;
     RenderHouse(mainGame);
 }
 
-void Render2D(){
-    if(IsInMenu(client)){
+void Render2D() {
+    if(IsInMenu(client)) {
         RenderMenu(mainGame, client, client.config.PATH);
         return;
     }
@@ -86,26 +86,26 @@ void Render2D(){
     RenderMoney(mainGame);
     client.pressedButton = RenderButtons(mainGame, client);
     RenderHouseInfo(mainGame);
-    if(client.gameOver){
+    if(client.gameOver) {
         string texto = "Fim de jogo! Vencedor: " + client.winnerName;
         DrawText(texto.c_str(), 20, ScreenH / 2, 24, GOLD);
     }
 }
 
-void Debug(){
+void Debug() {
     std::cout << "Player: " << GetName(GetPlayer(mainGame)) << std::endl;
     std::cout << "House num: " << to_string(GetPos(GetPlayer(mainGame))) << std::endl;
     std::cout << "Client Index: " << client.index << std::endl;
 }
 
-string ActionRollDice(){
-    if(client.index != GetID(GetPlayer(mainGame))){
+string ActionRollDice() {
+    if(client.index != GetID(GetPlayer(mainGame))) {
         return "Jogue no seu turno!";
     }
-    if(client.gameOver){
+    if(client.gameOver) {
         return "O jogo ja acabou! Vencedor: " + client.winnerName;
     }
-    if(client.rolledThisTurn){
+    if(client.rolledThisTurn) {
         return "Voce ja jogou os dados nesta rodada! Passe a vez.";
     }
 
@@ -114,24 +114,24 @@ string ActionRollDice(){
     int dado2 = GetRandomValue(1, 6);
     int total = dado1 + dado2;
 
-    if(player.arrested){
+    if(player.arrested) {
         bool saiu = false;
         string motivo;
 
-        if(dado1 == dado2){
+        if(dado1 == dado2) {
             saiu = true;
             motivo = "tirou dados duplos";
-        } else if(player.jailCard){
+        } else if(player.jailCard) {
             player.jailCard = false;
             saiu = true;
             motivo = "usou a carta de saida da prisao";
-        } else if(player.money >= 50){
+        } else if(player.money >= 50) {
             RemoveMoney(player, 50);
             saiu = true;
             motivo = "pagou $50 de fianca";
         }
 
-        if(!saiu){
+        if(!saiu) {
             client.rolledThisTurn = true;
             return GetName(player) + " continua preso (tirou " + to_string(dado1) + " e " + to_string(dado2) + ")";
         }
@@ -145,18 +145,18 @@ string ActionRollDice(){
     return MoveAndTriggerEvent(player, dado1, dado2, total, GetName(player));
 }
 
-string ActionBuy(){
-    if(client.index != GetID(GetPlayer(mainGame))){
+string ActionBuy() {
+    if(client.index != GetID(GetPlayer(mainGame))) {
         return "Jogue no seu turno!";
     }
-    if(mainGame.eventDecision.action != BUY){
+    if(mainGame.eventDecision.action != BUY) {
         return "Nao ha nada para comprar nesta casa.";
     }
 
     Player& player = GetPlayer(mainGame);
     House& house = GetHouse(mainGame, (uint8_t)mainGame.eventDecision.houseId);
 
-    if(Buy(house, player)){
+    if(Buy(house, player)) {
         mainGame.eventDecision.action = NONE;
         mainGame.eventDecision.houseId = -1;
         return GetName(player) + " comprou " + house.name + " por $" + to_string(house.price);
@@ -165,14 +165,14 @@ string ActionBuy(){
     return "Dinheiro insuficiente para comprar " + house.name;
 }
 
-string ActionBuild(){
-    if(client.index != GetID(GetPlayer(mainGame))){
+string ActionBuild() {
+    if(client.index != GetID(GetPlayer(mainGame))) {
         return "Jogue no seu turno!";
     }
     Player& player = GetPlayer(mainGame);
     House& house = GetHouse(mainGame, GetPos(player));
 
-    if(BuildHouse(mainGame, house, player)){
+    if(BuildHouse(mainGame, house, player)) {
         string tipo = (house.housesBuilt >= 5) ? "um hotel" : "uma casa";
         return GetName(player) + " construiu " + tipo + " em " + house.name;
     }
@@ -180,36 +180,36 @@ string ActionBuild(){
     return "Nao e possivel construir em " + house.name + " agora.";
 }
 
-string ActionMortgage(){
-    if(client.index != GetID(GetPlayer(mainGame))){
+string ActionMortgage() {
+    if(client.index != GetID(GetPlayer(mainGame))) {
         return "Jogue no seu turno!";
     }
     Player& player = GetPlayer(mainGame);
     House& house = GetHouse(mainGame, GetPos(player));
 
-    if(MortgageProperty(mainGame, player, house)){
+    if(MortgageProperty(mainGame, player, house)) {
         return GetName(player) + " hipotecou " + house.name + " e recebeu $" + to_string(house.mortgagePrice);
     }
 
     return "Nao e possivel hipotecar " + house.name + ".";
 }
 
-string ActionNegotiate(){
-    if(client.index != GetID(GetPlayer(mainGame))){
+string ActionNegotiate() {
+    if(client.index != GetID(GetPlayer(mainGame))) {
         return "Jogue no seu turno!";
     }
     return "Negociacao entre jogadores ainda nao implementada.";
 }
 
-string ActionEndTurn(){
-    if(client.index != GetID(GetPlayer(mainGame))){
+string ActionEndTurn() {
+    if(client.index != GetID(GetPlayer(mainGame))) {
         return "Jogue no seu turno!";
     }
-    if(client.gameOver){
+    if(client.gameOver) {
         return "O jogo ja acabou! Vencedor: " + client.winnerName;
     }
 
-    if(!client.rolledThisTurn){
+    if(!client.rolledThisTurn) {
         return "Role os dados!";
     }
 
@@ -221,14 +221,14 @@ string ActionEndTurn(){
 
     uint8_t alive = 0;
     int8_t lastAliveId = -1;
-    for(int i = 0; i < mainGame.qntPlayers; i++){
-        if(!mainGame.players[i].bankrupt){
+    for(int i = 0; i < mainGame.qntPlayers; i++) {
+        if(!mainGame.players[i].bankrupt) {
             alive++;
             lastAliveId = i;
         }
     }
 
-    if(alive <= 1){
+    if(alive <= 1) {
         client.gameOver = true;
         client.winnerName = (lastAliveId != -1) ? GetName(mainGame.players[lastAliveId]) : "Ninguem";
         return "Fim de jogo! " + client.winnerName + " venceu!";
@@ -237,7 +237,7 @@ string ActionEndTurn(){
     uint8_t newIndex;
     do {
         newIndex = NextPlayer(mainGame);
-        if(newIndex == 0){
+        if(newIndex == 0) {
             NextRound(mainGame);
         }
     } while(mainGame.players[newIndex].bankrupt);
