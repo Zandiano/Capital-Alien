@@ -32,6 +32,7 @@ struct Client{
     string winnerName = "";
     bool rolledThisTurn = false;
     int index = 0;
+    int counter = 0;
 };
 
 struct House{

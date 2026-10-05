@@ -65,12 +65,6 @@ void SendFile(const Game& game, const string& filepath){
     cout << "Sending..." << endl;
 
     for(int i = 0; i < MAXHOUSES; i++){
-        file.write((const char*)&game.houses[i].color, sizeof(Color));
-        file.write((const char*)&game.houses[i].type, sizeof(uint16_t));
-        file.write((const char*)&game.houses[i].value, sizeof(uint16_t));
-        file.write((const char*)&game.houses[i].price, sizeof(uint16_t));
-        file.write((const char*)&game.houses[i].residencePrice, sizeof(uint16_t));
-        file.write((const char*)&game.houses[i].mortgagePrice, sizeof(uint16_t));
         file.write((const char*)&game.houses[i].owner, sizeof(uint8_t));
         file.write((const char*)&game.houses[i].mortgaged, sizeof(bool));
         file.write((const char*)&game.houses[i].housesBuilt, sizeof(uint8_t));
@@ -97,8 +91,6 @@ void SendFile(const Game& game, const string& filepath){
     }
 
     file.write((const char*)&game.playerIndex, sizeof(uint8_t));
-    file.write((const char*)&game.qntHouse, sizeof(uint8_t));
-    file.write((const char*)&game.qntPlayers, sizeof(uint8_t));
     file.write((const char*)&game.hotelsBuilt, sizeof(uint8_t));
     file.write((const char*)&game.housesBuilt, sizeof(uint8_t));
     file.write((const char*)&game.round, sizeof(uint16_t));
@@ -107,7 +99,7 @@ void SendFile(const Game& game, const string& filepath){
     file.write((const char*)&game.liquidation.active, sizeof(bool));
     file.write((const char*)&game.liquidation.playerId, sizeof(int8_t));
     file.write((const char*)&game.liquidation.receiverId, sizeof(int8_t));
-    file.write((const char*)&game.liquidation.amountOwed, sizeof(uint32_t));
+    file.write((const char*)&game.liquidation.amountOwed, sizeof(uint16_t));
     file.write((const char*)&game.liquidation.payEachPlayer, sizeof(bool));
 
     file.write((const char*)&game.eventDecision.action, sizeof(uint8_t));
@@ -128,12 +120,6 @@ void RetrieveFile(Game& game, const string& filepath){
     cout << "Retrieving..." << endl;
     
         for(int i = 0; i < MAXHOUSES; i++){
-        file.read((char*)&game.houses[i].color, sizeof(Color));
-        file.read((char*)&game.houses[i].type, sizeof(uint16_t));
-        file.read((char*)&game.houses[i].value, sizeof(uint16_t));
-        file.read((char*)&game.houses[i].price, sizeof(uint16_t));
-        file.read((char*)&game.houses[i].residencePrice, sizeof(uint16_t));
-        file.read((char*)&game.houses[i].mortgagePrice, sizeof(uint16_t));
         file.read((char*)&game.houses[i].owner, sizeof(uint8_t));
         file.read((char*)&game.houses[i].mortgaged, sizeof(bool));
         file.read((char*)&game.houses[i].housesBuilt, sizeof(uint8_t));
@@ -160,8 +146,6 @@ void RetrieveFile(Game& game, const string& filepath){
     }
 
     file.read((char*)&game.playerIndex, sizeof(uint8_t));
-    file.read((char*)&game.qntHouse, sizeof(uint8_t));
-    file.read((char*)&game.qntPlayers, sizeof(uint8_t));
     file.read((char*)&game.hotelsBuilt, sizeof(uint8_t));
     file.read((char*)&game.housesBuilt, sizeof(uint8_t));
     file.read((char*)&game.round, sizeof(uint16_t));
@@ -170,7 +154,7 @@ void RetrieveFile(Game& game, const string& filepath){
     file.read((char*)&game.liquidation.active, sizeof(bool));
     file.read((char*)&game.liquidation.playerId, sizeof(int8_t));
     file.read((char*)&game.liquidation.receiverId, sizeof(int8_t));
-    file.read((char*)&game.liquidation.amountOwed, sizeof(uint32_t));
+    file.read((char*)&game.liquidation.amountOwed, sizeof(uint16_t));
     file.read((char*)&game.liquidation.payEachPlayer, sizeof(bool));
 
     file.read((char*)&game.eventDecision.action, sizeof(uint8_t));

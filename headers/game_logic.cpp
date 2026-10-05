@@ -61,7 +61,11 @@ void UpdatePre() {
     if(client.pressedButton) {
         SendFile(mainGame, client.config.PATH);
     }
-    RetrieveFile(mainGame, client.config.PATH);
+    if(client.counter >= 30){
+        RetrieveFile(mainGame, client.config.PATH);
+    } else{
+        client.counter++;
+    }
 }
 
 void Update() {
