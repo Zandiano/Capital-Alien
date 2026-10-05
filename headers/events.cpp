@@ -380,7 +380,7 @@ void HouseEvent(Game& game, Player& player, House& house) {
     if(GetOwner(house) == -1) {
         id = -1;
     } else {
-        Player& owner = owner = GetPlayer(game, GetOwner(house));
+        Player& owner = GetPlayer(game, GetOwner(house));
         id = GetID(owner);
     }
 
